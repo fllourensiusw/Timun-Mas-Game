@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#13291f">
+  <title>Timun Mas: Escape the Giant Buto Ijo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">✿</div>
+      <div class="brand"><span class="eyebrow">A cooperative folklore adventure</span><strong>TIMUN MAS <i>·</i> ESCAPE THE GIANT BUTO IJO</strong></div>
+      <div class="connection"><span class="live-dot" id="liveDot"></span><span id="connectionLabel">Not connected</span></div>
+    </header>
+
+    <section class="screen intro-screen" id="introScreen">
+      <div class="intro-art" aria-hidden="true"><div class="moon"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="cucumber-art">✿</div><div class="giant-shadow">◉</div></div>
+      <div class="intro-card">
+        <span class="eyebrow gold">A story from Central Java, Indonesia</span>
+        <h1 id="introTitle">A promise came due.</h1>
+        <p id="introText">Mbok Srini wished for a child. Buto Ijo gave her a magical cucumber seed, promising a daughter—and swearing to return for her when she grew up. From the cucumber, Timun Mas was born.</p>
+        <div class="story-dots" id="storyDots"><span class="active"></span><span></span><span></span></div>
+        <div class="intro-actions"><button class="button secondary" id="skipStory">Skip story</button><button class="button primary" id="nextStory">Continue <span>→</span></button></div>
+        <p class="adaptation-note">A creative game adaptation inspired by Indonesian folklore.</p>
+      </div>
+    </section>
+
+    <section class="screen lobby-screen hidden" id="lobbyScreen">
+      <div class="lobby-heading"><div><span class="eyebrow gold">Gather your companions</span><h1>Make a room. Escape together.</h1><p>2–4 companions · Timun Mas is an AI companion · Buto Ijo is on the way</p></div><span class="lobby-flower">✿</span></div>
+      <div class="lobby-layout">
+        <section class="panel setup-panel" id="entryPanel">
+          <h2>Your companion</h2>
+          <label class="field-label" for="playerName">Display name</label><input id="playerName" maxlength="18" value="Companion" autocomplete="nickname">
+          <span class="field-label">Outfit color</span>
+          <div class="color-row" id="colorPicker" role="radiogroup" aria-label="Outfit color">
+            <button class="color-choice selected red" data-color="red" aria-label="Red outfit" title="Red"></button><button class="color-choice blue" data-color="blue" aria-label="Blue outfit" title="Blue"></button><button class="color-choice green" data-color="green" aria-label="Green outfit" title="Green"></button><button class="color-choice yellow" data-color="yellow" aria-label="Yellow outfit" title="Yellow"></button>
+          </div>
+          <div class="difficulty-wrap" id="difficultyWrap"><label class="field-label" for="difficulty">Buto Ijo difficulty</label><select id="difficulty"><option>Easy</option><option selected>Normal</option><option>Hard</option></select><small>Easy gives more breathing room; Hard is faster and more alert.</small></div>
+          <div class="button-stack"><button class="button primary full" id="createRoom">✦ Create Room</button><div class="join-row"><input id="roomCode" maxlength="5" placeholder="ROOM CODE" aria-label="Room code"><button class="button secondary" id="joinRoom">Join Room</button></div></div>
+          <p class="inline-error" id="lobbyError" role="status"></p>
+        </section>
+        <section class="panel room-panel hidden" id="roomPanel">
+          <div class="room-title"><div><span class="eyebrow gold">Your room</span><h2 id="roomTitle">ROOM · —</h2></div><span class="pill" id="difficultyPill">Normal</span></div>
+          <p class="room-help">Share the code or invite link. Everyone needs to mark ready; the host starts with at least two companions.</p>
+          <div class="invite-row"><code id="inviteCode">-----</code><button class="button small secondary" id="copyInvite">Copy invite</button></div>
+          <div class="roster" id="roster"></div>
+          <div class="room-controls"><button class="button secondary" id="leaveRoom">Back</button><button class="button secondary" id="readyButton">○ Mark ready</button><button class="button primary" id="startButton" disabled>Start adventure</button></div>
+          <p class="inline-error" id="roomError" role="status"></p>
+        </section>
+        <aside class="panel controls-panel"><span class="eyebrow gold">Quick guide</span><h2>Stick together.</h2><div class="guide-line"><span class="keycap">W A S D</span><span>or arrows to move</span></div><div class="guide-line"><span class="keycap">E / Space</span><span>interact, pick up, rescue</span></div><div class="guide-line"><span class="mini-icon">✿</span><span>Timun Mas follows a free companion. Guide her to each exit.</span></div><div class="guide-line"><span class="mini-icon danger">◉</span><span>If caught, teammates can hold Interact near your cage to rescue you.</span></div><div class="mobile-hint">Mobile players get a touch D-pad and Interact button.</div><div class="campaign-note"><strong>Five maps. One escape.</strong><br>Find clues, plant seeds, cross the river, climb the mountain, and trap the giant at the coast.</div></aside>
+      </div>
+    </section>
+
+    <section class="game-screen hidden" id="gameScreen">
+      <div class="game-topline"><div><span class="eyebrow gold" id="mapCounter">MAP 1 OF 5</span><h1 id="mapHeading">Desa Timun Mas <span>· The Giant Is Coming</span></h1></div><div class="top-actions"><span class="pill" id="gameDifficulty">Normal</span><button class="button small secondary" id="guideButton">Item Guide</button><button class="button small secondary" id="backToLobby">Room</button></div></div>
+      <div class="hud-strip"><div class="objective-block"><span class="hud-label">TEAM OBJECTIVE</span><strong id="objectiveText">Find route clues and the gate key.</strong><span id="gameMessage" aria-live="polite"></span></div><div class="threat-block"><span class="hud-label">BUTO IJO</span><strong id="threatText">Searching</strong><span class="threat-meter"><i id="threatMeter"></i></span></div><div class="companion-block"><span class="hud-label">TIMUN MAS</span><strong id="npcStatus">Following a companion</strong><span id="rosterMini"></span></div></div>
+      <div class="board-wrap"><canvas id="gameCanvas" aria-label="Top-down cooperative survival game"></canvas><div class="map-toast hidden" id="mapToast"></div><div class="item-toast hidden" id="itemToast"></div><div class="touch-controls" id="touchControls"><div class="dpad"><button data-dir="up" aria-label="Move up">▲</button><div><button data-dir="left" aria-label="Move left">◀</button><button data-dir="down" aria-label="Move down">▼</button><button data-dir="right" aria-label="Move right">▶</button></div></div><button class="touch-interact" id="touchInteract">HOLD<br><b>INTERACT</b></button></div><div class="canvas-hint" id="canvasHint">WASD / Arrows move <span>·</span> E / Space interact</div></div>
+      <div class="game-footer"><div class="inventory" id="inventory"><span class="hud-label">YOUR INVENTORY</span><div id="inventorySlots"><div class="empty-slot">Empty · 2 slots</div></div></div><div class="rescue-status" id="rescueStatus"></div><div class="footer-hint">Stay close. Buto Ijo can only be delayed by magic.</div></div>
+    </section>
+
+    <div class="modal-backdrop hidden" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><div class="modal guide-modal"><button class="close-button" id="closeGuide" aria-label="Close item guide">×</button><span class="eyebrow gold">Your field notes</span><h2 id="guideTitle">Item Guide</h2><p class="modal-lead">Pick items up with Interact. Carry two item types at a time. Use each one at its matching glowing marker.</p><div class="item-guide-grid" id="itemGuideGrid"></div><div class="guide-footer"><span class="keycap">E / Space</span> or hold the mobile Interact button at a marker.</div></div></div>
+    <div class="modal-backdrop hidden" id="endingModal" role="dialog" aria-modal="true"><div class="modal ending-modal"><div class="ending-spark">✿</div><span class="eyebrow gold" id="endingEyebrow">The story continues</span><h2 id="endingTitle">A new path opens.</h2><p id="endingText"></p><div class="ending-actions" id="endingActions"></div></div></div>
+    <footer class="app-footer"><span>Inspired by the Timun Mas folk tale of Central Java, Indonesia.</span><span id="serverFootnote">Local room server · no account required</span></footer>
+  </main>
+  <script src="config.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>

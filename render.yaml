@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: timun-mas-game-server
+    runtime: node
+    plan: free
+    buildCommand: node --check server.mjs
+    startCommand: node server.mjs
